@@ -1,9 +1,9 @@
 //Java implementation of BFS using Adjacency Matrix
 import java.util.*;
-class BFAAdjMatrix{
+class BFSAdjMatrix{
 	private int v;
 	private int[][]adj;
-	public BFAAdjMatrix(int v){
+	public BFSAdjMatrix(int v){
 		this.v=v;
 		adj=new int[v][v];
 	}
@@ -27,7 +27,7 @@ class BFAAdjMatrix{
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Enter the number of  vertices:");
 		int v =sc.nextInt();
-		BFAAdjMatrix graph = new BFAAdjMatrix(v);
+		BFSAdjMatrix graph = new BFSAdjMatrix(v);
 		System.out.println("Enter the adjacency matrix("+v+"x"+v+"):");
 		for(int i=0;i<v;i++)
 			for(int j=0;j<v;j++)
