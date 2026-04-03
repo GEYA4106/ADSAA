@@ -1,80 +1,85 @@
-//Java Program to implement MaxHeap using arrays
-class MaxHeap{
-    int arr[];
-    int maxSize,heapSize;
-    MaxHeap(int maxSize){
-       this.maxSize=maxSize;
-       heapSize=0;
-       arr=new int[maxSize]; 
-    }
-    int parent(int i){
-        return (i-1)/2;
-    }
-    int lChild(int i){
-        return 2*i+1;
-    }
-    int rChild(int i){
-        return 2*i+2;
-    }
-    void MaxHeapify(int i){
-        int l=lChild(i);
-        int r=rChild(i);
-        int largest=i;
-        if(l<heapSize && arr[l]>arr[i])
-            largest=l;
-        if(r<heapSize && arr[r]>arr[largest])
-            largest=r;
-        if(largest!=i){
-            int temp=arr[i];
-            arr[i]=arr[largest];
-            arr[largest]=temp;
-            MaxHeapify(largest);
+import java.util.*;
+public class MaxHeap {
+    static int[] heap;
+    static int size;
+    static void insert(int value) {
+        size++;
+        heap[size] = value;
+        int i = size;
+        while (i > 1 && heap[i / 2] < heap[i]) {
+            int temp = heap[i];
+            heap[i] = heap[i / 2];
+            heap[i / 2] = temp;
+            i = i / 2;
         }
     }
-    void removeMax(){
-        if(heapSize<=0)
+
+    static int delete() {
+        if (size == 0) {
             System.out.println("Heap is empty");
-        if(heapSize==1)
-            heapSize--;
-        else{
-            arr[0]=arr[heapSize-1];
-            heapSize--;
-            MaxHeapify(0);
+            return -1;
         }
+        int max = heap[1];
+        heap[1] = heap[size];
+        size--;
+        int i = 1;
+        while (2 * i <= size) {
+            int left = 2 * i;
+            int right = 2 * i + 1;
+            int largest = i;
+            if (left <= size && heap[left] > heap[largest])
+                largest = left;
+            if (right <= size && heap[right] > heap[largest])
+                largest = right;
+            if (largest != i) {
+                int temp = heap[i];
+                heap[i] = heap[largest];
+                heap[largest] = temp;
+                i = largest;
+            } else {
+                break;
+            }
+        }
+
+        return max;
     }
-    int getMax(){
-        return arr[0];
-    }int curSize(){
-        return heapSize;
-    }
-    void insertKey(int x){
-        if(heapSize==maxSize){
-            System.out.println("\nOverflow could not insert key\n");
-            return;
+    static void display() {
+        for (int i = 1; i <= size; i++) {
+            System.out.print(heap[i] + " ");
         }
-        int i=heapSize;
-        arr[i]=x;
-        heapSize++;
-        while(i!=0 && arr[parent(i)]<arr[i]){
-            int temp=arr[i];
-            arr[i]=arr[parent(i)];
-            arr[parent(i)]=temp;
-            i=parent(i);
-        }
+        System.out.println();
     }
     public static void main(String[] args) {
-        MaxHeap h=new MaxHeap(15);
-        int elements[]={3,10,12,8,2,14};
-        for(int e:elements)
-            h.insertKey(e);
-        System.out.println("The current size of the heap is"+h.curSize());
-        System.err.println("The current maximum element is"+h.getMax());
-        h.removeMax();
-        System.err.println("The current size of the element is"+h.curSize());
-        h.insertKey(15);
-        h.insertKey(5);
-        System.err.println("The current size of the heap is"+h.curSize());
-        System.err.println("The current maximum element is"+h.getMax());
-    
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter maximum size of heap: ");
+        int n = sc.nextInt();
+        heap = new int[n + 1];
+        size = 0;
+        while (true) {
+            System.out.println("\n1.Insert  2.Delete  3.Display  4.Exit");
+            System.out.print("Enter choice: ");
+            int ch = sc.nextInt();
+            switch (ch) {
+                case 1:
+                    System.out.print("Enter value: ");
+                    int val = sc.nextInt();
+                    insert(val);
+                    break;
+                case 2:
+                    int deleted = delete();
+                    if (deleted != -1)
+                        System.out.println("Deleted element: " + deleted);
+                    break;
+                case 3:
+                    System.out.print("Heap: ");
+                    display();
+                    break;
+                case 4:
+                    sc.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
     }
 }
