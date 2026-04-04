@@ -1,45 +1,43 @@
-//Java Program to implement NQueen problem using back-tracking
-public class NQueen{
-	static int N=4;
-	public static void main(string [] args){
-	int [] [] board=new int[N][N];
-	solveNQueen(board,0);
-	}
-	static void solveQueen(int [][] board,int row){
-		if(row==N){
-			printBoard(board);
-			System.out.println();
-			return;
-		}
-		for(int col=0;col<N;col++){
-			if(isSafe(board,row,col)){
-				board[row][cou]=1;
-				solveNQueen(board,row+1);
-				board[row][col]=0;
-			}
-		}
-	}
-	static boolean isSafe(int[][]board,int row,int col){
-		for(int i=0;i<row;i++){
-			if(board[i][col]==1)
-				return false;
-		}
-		for(int i=row-1,j=col-1;i>=0 &&j>=0;i--,j--){
-			if(board[i][j]==1)
-				return false;
-		}
-		for(int i=row-1,j=col+1;i>=0 &&j>=0;i--,j--){
-			if(board[i][j]==1)
-				return false;
-		}
-		return true;
-	}
-	static void printBooard(int[][] board){
-		for(int i=0;i<N;i++){
-			for(int j=0;j<N;j++){
-			System.out.print(board[i][j]+" ");
-			}
-			System.out.println();
-		}
-	}
+import java.util.*;
+public class NQueens {
+static int[] x;
+public static boolean place(int k, int i) {
+    for (int j = 1; j < k; j++) {
+        if (x[j] == i || Math.abs(x[j] - i) == Math.abs(j - k)) {
+            return false;
+        }
+    }
+    return true;
+}
+public static void nqueen(int k, int n) {
+    for (int i = 1; i <= n; i++) {
+        if (place(k, i)) {
+            x[k] = i;
+            if (k == n) {
+                write(n); 
+            } else {
+                nqueen(k + 1, n);
+            }
+        }
+    }
+}
+public static void write(int n) {
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (x[i] == j)
+                System.out.print("Q ");
+            else
+                System.out.print("* ");
+        }
+        System.out.println();
+    }
+    System.out.println("---------");
+}
+public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    System.out.print("Enter number of queens: ");
+    int n = sc.nextInt();
+    x = new int[n + 1];  
+    nqueen(1, n);
+}
 }
